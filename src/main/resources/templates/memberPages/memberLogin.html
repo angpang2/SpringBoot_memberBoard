@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--bootstrap CSS-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>-->
+    <script th:src="@{/js/jqury.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        #save-form {
+            width: 800px;
+            /* Rectangle 4 */
+
+            position: absolute;
+            height: 727px;
+            left: 554px;
+            top: 297px;
+            background: #D9D9D9;
+
+        }
+    </style>
+
+</head>
+<body>
+<form action="/member/save" method="post" class="mainContainer" id="save-form" enctype="multipart/form-data">
+    <h2>회원가입</h2>
+    <input name="memberEmail" type="text" placeholder="이메일" class="form-control" id="memberEmail">
+    <input type="button" value="이메일 중복체크" onclick="dupcheck()">
+    <div id="checkResult">
+    </div>
+    <input name="memberPassword" type="password" placeholder="비밀번호" class="form-control">
+    <input name="memberName" type="text" placeholder="이름" class="form-control">
+    <input name="memberAge" type="text" placeholder="나이" class="form-control">
+    <input name="memberPhone" type="text" placeholder="핸드폰" class="form-control">
+    <input type="submit" value="가입" class="btn btn-primary">
+    <input type="file" name="memberFile">
+</form>
+
+</body>
+
+<script th:inline="javascript">
+    const dupcheck = () => {
+        const emailCheck = document.getElementById("memberEmail").value;
+        const checkResult = document.getElementById("checkResult");
+        axios({
+            method: "post",
+            url: "/member/dup-check",
+            params: {
+                memberEmail: emailCheck
+            }
+        }).then(res => {
+            console.log("then 함수");
+            console.log(res);
+            checkResult.innerHTML = "사용가능한 이메일"
+            checkResult.style.color = "green"
+        }).catch(res => {
+            console.log("catch 함수");
+            console.log(res);
+            checkResult.innerHTML = "사용중인 이메일"
+            checkResult.style.color = "red"
+
+        })
+    }
+</script>
+</html>
