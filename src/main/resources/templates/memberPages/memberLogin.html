@@ -28,9 +28,11 @@
     <h2>회원가입</h2>
     <input name="memberEmail" type="text" placeholder="이메일" class="form-control" id="memberEmail">
     <input type="button" value="이메일 중복체크" onclick="dupcheck()">
-    <div id="checkResult">
+    <div id="emailCheckResult">
     </div>
-    <input name="memberPassword" type="password" placeholder="비밀번호" class="form-control">
+    <input name="memberPassword" type="password" placeholder="비밀번호" class="form-control" onblur="passwordCheck()">
+    <div id="passCheckResult">
+    </div>
     <input name="memberName" type="text" placeholder="이름" class="form-control">
     <input name="memberAge" type="text" placeholder="나이" class="form-control">
     <input name="memberPhone" type="text" placeholder="핸드폰" class="form-control">
@@ -43,7 +45,7 @@
 <script th:inline="javascript">
     const dupcheck = () => {
         const emailCheck = document.getElementById("memberEmail").value;
-        const checkResult = document.getElementById("checkResult");
+        const checkResult = document.getElementById("emailCheckResult");
         axios({
             method: "post",
             url: "/member/dup-check",
@@ -62,6 +64,23 @@
             checkResult.style.color = "red"
 
         })
+    }
+
+//    비밀번호 정규식 체크
+    const passwordCheck = () => {
+        const password = document.getElementsByName("memberPassword")[0].value;
+        const checkResult = document.getElementById("passCheckResult");
+        const regExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
+        if (!regExp.test(password)) {
+            document.getElementsByName("memberPassword")[0].value = "";
+            document.getElementsByName("memberPassword")[0].focus();
+            checkResult.innerHTML = "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요."
+            checkResult.style.color = "red"
+        } else {
+            checkResult.innerHTML = "사용가능한 비밀번호"
+            checkResult.style.color = "green"
+
+        }
     }
 </script>
 </html>
