@@ -35,7 +35,10 @@
     </div>
     <input name="memberName" type="text" placeholder="이름" class="form-control">
     <input name="memberAge" type="text" placeholder="나이" class="form-control">
-    <input name="memberPhone" type="text" placeholder="핸드폰" class="form-control">
+    <input name="memberPhone" type="text" placeholder="핸드폰" class="form-control" onblur="phoneCheck()">
+    <div id="phoneCheckResult">
+
+    </div>
     <input type="submit" value="가입" class="btn btn-primary">
     <input type="file" name="memberFile">
 </form>
@@ -79,8 +82,23 @@
         } else {
             checkResult.innerHTML = "사용가능한 비밀번호"
             checkResult.style.color = "green"
-
         }
     }
+    //전화번호 정규식 체크
+    const phoneCheck = () => {
+        const phone = document.getElementsByName("memberPhone")[0].value;
+        const checkResult = document.getElementById("phoneCheckResult");
+        const regExp = /^\d{3}-\d{3,4}-\d{4}$/;
+        if (!regExp.test(phone)) {
+            document.getElementsByName("memberPhone")[0].value = "";
+            document.getElementsByName("memberPhone")[0].focus();
+            checkResult.innerHTML = "전화번호는 000-0000-0000 형식으로 입력해주세요."
+            checkResult.style.color = "red"
+        } else {
+            checkResult.innerHTML = "사용가능한 전화번호"
+            checkResult.style.color = "green"
+        }
+    }
+
 </script>
 </html>
