@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <style>
         .card-header{
             /* Rectangle 1 */
@@ -39,8 +40,8 @@
         <div class="panel-heading" style="text-align: center">로그인</div>
         <div class="panel-body">
                 <div class="form-group has-success">
-                    <input type="text" class="form-control" id="inputSuccess1" name="id" placeholder="아이디">
-                    <input type="password" class="form-control" id="inputSuccess2" name="pw" placeholder="비밀번호">
+                    <input type="text" class="form-control" id="inputSuccess1" name="memberEmail" placeholder="아이디">
+                    <input type="password" class="form-control" id="inputSuccess2" name="memberPassword" placeholder="비밀번호">
                     <div class="btn-group btn-group-justified" role="group" style="padding-left: 36px;">
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-default" onclick="memberLogin()" style="border-color: black">로그인</button>
@@ -66,5 +67,32 @@
     const memberJoin = () => {
       location.href = "/member/save"
     }
+
+    const memberLogin = () => {
+        const email = document.getElementById("inputSuccess1").value;
+        const pw = document.getElementById("inputSuccess2").value;
+        $.ajax({
+            type:"post",
+            url:"/member/login",
+            data: {
+                memberEmail: email,
+                memberPassword: pw,
+            },
+            dataType:"text",
+            success : function (result){
+                if(result == "ok"){
+                    alert("로그인성공")
+                    location.href = "/";
+                }else{
+                    alert("아이디 또는 비밀번호를 다시 확인해주세요")
+                }
+            },
+            error : function (){
+                alert("아이디 또는 비밀번호를 다시 확인해주세요")
+            }
+        })
+    }
+
+
 </script>
 </html>

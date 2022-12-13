@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Controller
@@ -36,6 +37,19 @@ public class MemberController {
             return new ResponseEntity<>("사용해도 됩니다.", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("사용할 수 없습니다.", HttpStatus.CONFLICT);
+        }
+    }
+
+    @PostMapping("/login")
+    public @ResponseBody String memberLogin(@RequestParam("memberEmail")String memberEmail
+            , @RequestParam("memberPassword")String memberPassword, HttpSession session){
+        System.out.println("memberEmail = " + memberEmail + ", memberPassword = " + memberPassword + ", session = " + session);
+        MemberDTO result = memberService.memberLogin(memberEmail,memberPassword);
+        if(result!=null){
+            session.setAttribute("member",result);
+            return "ok";
+        }else {
+            return "no";
         }
     }
 
