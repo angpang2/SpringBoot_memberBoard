@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.io.IOException;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/member")
@@ -23,7 +25,7 @@ public class MemberController {
         return "/memberPages/memberLogin";
     }
     @PostMapping("/save")
-    public String memberSave(@ModelAttribute MemberDTO memberDTO){
+    public String memberSave(@ModelAttribute MemberDTO memberDTO) throws IOException {
         memberService.save(memberDTO);
         return "index";
     }
