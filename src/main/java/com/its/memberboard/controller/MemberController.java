@@ -43,7 +43,6 @@ public class MemberController {
     @PostMapping("/login")
     public @ResponseBody String memberLogin(@RequestParam("memberEmail")String memberEmail
             , @RequestParam("memberPassword")String memberPassword, HttpSession session){
-        System.out.println("memberEmail = " + memberEmail + ", memberPassword = " + memberPassword + ", session = " + session);
         MemberDTO result = memberService.memberLogin(memberEmail,memberPassword);
         if(result!=null){
             session.setAttribute("member",result);
