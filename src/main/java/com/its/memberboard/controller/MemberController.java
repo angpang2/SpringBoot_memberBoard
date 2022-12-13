@@ -52,6 +52,17 @@ public class MemberController {
         }
     }
 
+    @GetMapping("/logout")
+    public String memberLogout(HttpSession session){
+        session.invalidate();
+        return "index";
+    }
+
+    @GetMapping("/mypage")
+    public String memberMypage(){
+        return "memberPages/myPage";
+    }
+
 
 
 }

@@ -41,10 +41,10 @@
                     <h2 th:text="${session.member.memberEmail}+'님 환영합니다'"></h2>
                     <div class="btn-group btn-group-justified" role="group" style="padding-left: 36px;">
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-default" onclick="memberLogin()" style="border-color: black">로그아웃</button>
+                            <button type="button" class="btn btn-default" onclick="memberLogout()" style="border-color: black">로그아웃</button>
                         </div>
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-default" onclick="memberJoin()" style="border-color: black">마이페이지</button>
+                            <button type="button" class="btn btn-default" onclick="memberMypage()" style="border-color: black">마이페이지</button>
                         </div>
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-default" style="border-color: black">pw 찾기</button>
@@ -88,6 +88,13 @@
 <script th:inline="javascript">
     const memberJoin = () => {
       location.href = "/member/save"
+    }
+    const memberLogout = () => {
+        location.href = "/member/logout"
+
+    }
+    const memberMypage = () => {
+      location.href="/member/mypage"
     }
 
     const memberLogin = () => {
