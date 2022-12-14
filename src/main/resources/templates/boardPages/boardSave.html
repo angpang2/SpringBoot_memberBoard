@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>save</title>
+    <style>
+        #write-form {
+            width: 800px;
+            margin-top: 50px;
+        }
+    </style>
+<!--    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">-->
+<!--    bootstrap 사용-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+</head>
+<body>
+<div class="container" id="write-form">
+    <h1 style="text-align: center"> 글 작 성 </h1>
+    <form action="/board/save" method="post" enctype="multipart/form-data">
+        <label>
+            <input type="text" name="boardWriter" class="form-control" th:value="${session.member.memberEmail}" readonly>
+        </label>
+        <input type="text" name="boardTitle" class="form-control" placeholder="제목">
+        <textarea name="boardContents" cols="30" rows="10" class="form-control" placeholder="내용을 입력하세요"></textarea>
+        <input type="file" name="boardFile" class="form-control" multiple>
+        <input type="submit" value="작성" class="btn btn-primary">
+    </form>
+</div>
+</body>
+</html>
