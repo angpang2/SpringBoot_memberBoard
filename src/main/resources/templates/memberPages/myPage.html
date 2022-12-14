@@ -17,16 +17,26 @@
     <form action="/member/update" method="post" name="updateForm">
         id: <input type="text" name="id" th:value="${session.member.id}" class="form-control" readonly>
         email: <input type="text" name="memberEmail" th:value="${session.member.memberEmail}" class="form-control" readonly>
-        password: <input type="text" name="memberPassword" id="memberPassword" class="form-control">
+        password: <input type="password" name="memberPassword" id="memberPassword" class="form-control">
         name: <input type="text" name="memberName" th:value="${session.member.memberName}" class="form-control">
         age: <input type="text" name="memberAge" th:value="${session.member.memberAge}" class="form-control">
         phone: <input type="text" name="memberPhone" th:value="${session.member.memberPhone}" class="form-control">
         <input type="button" value="수정" class="btn btn-warning" onclick="update()">
-        <input type="button" value="수정(axios)" class="btn btn-warning" onclick="updateAxios()">
     </form>
 </div>
 </body>
 <script th:inline="javascript">
+    const update = () => {
+        const memberPassword = [[${session.member.memberPassword}]];
+        const memberPassword2 = document.getElementById("memberPassword").value;
+        if (memberPassword == memberPassword2) {
+        document.updateForm.submit();
+      } else {
+        alert("비밀번호가 일치하지 않습니다.");
+      }
+
+    }
+
 
 
 </script>

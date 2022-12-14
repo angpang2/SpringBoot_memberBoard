@@ -63,6 +63,13 @@ public class MemberController {
         return "memberPages/myPage";
     }
 
+    @PostMapping("/update")
+    public String memberUpdate(@ModelAttribute MemberDTO memberDTO,HttpSession session) throws IOException {
+        memberService.update(memberDTO);
+        session.invalidate();
+        return "index";
+    }
+
 
 
 }

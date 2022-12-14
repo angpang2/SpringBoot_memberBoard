@@ -50,4 +50,9 @@ public class MemberService {
             return null;
         }
     }
+
+    public void update(MemberDTO memberDTO) {
+        MemberEntity updateEntity = MemberEntity.toUpdateEntity(memberDTO);
+        memberRepository.save(updateEntity);
+    }
 }
