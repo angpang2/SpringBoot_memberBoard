@@ -5,7 +5,11 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.*;
 import java.io.IOException;
+import java.io.PrintWriter;
+
+import static javax.swing.JOptionPane.showMessageDialog;
 
 // 로그인 여부 확인
 // 로그인 하지 않은 상태라면 로그인 페이지로 보내고 로그인을 수행하면 직전에
@@ -19,6 +23,12 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         System.out.println("requestURL = " + requestURL);
         HttpSession session = request.getSession();
         if (session.getAttribute("member") == null) {
+            response.setContentType("text/html; charset=UTF-8");
+
+            PrintWriter out = response.getWriter();
+            out.println("<script>alert('권한이 없습니다.'); history.go(-1);</script>");
+            out.flush();
+
             response.sendRedirect("/?redirectURL=" + requestURL);
             return false;
         }
