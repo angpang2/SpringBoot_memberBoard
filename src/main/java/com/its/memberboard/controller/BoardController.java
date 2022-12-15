@@ -7,7 +7,10 @@ import com.its.memberboard.repository.BoardRepository;
 import com.its.memberboard.service.BoardService;
 import com.its.memberboard.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -41,6 +44,29 @@ public class BoardController {
     public String findAll(Model model) {
         List<BoardDTO> boardDTOList = boardService.findAll();
         model.addAttribute("boardList", boardDTOList);
+        return "boardPages/boardList";
+    }
+
+    @GetMapping
+    public String paging(@PageableDefault(page = 1) Pageable pageable, Model model) {
+        System.out.println("page" + pageable.getPageNumber());
+        Page<BoardDTO> boardDTOList = boardService.paging(pageable);
+        model.addAttribute("boardList", boardDTOList);
+        int blockLimit = 3;
+        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+        int endPage = ((startPage + blockLimit - 1) < boardDTOList.getTotalPages()) ? startPage + blockLimit - 1 : boardDTOList.getTotalPages();
+        // 삼항연산자
+        int test = 10;
+        int num = (test > 5) ? test: 100;
+        if (test > 5) {
+            num = test;
+        } else {
+            num = 100;
+        }
+
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
         return "boardPages/boardList";
     }
 

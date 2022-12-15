@@ -8,6 +8,9 @@ import com.its.memberboard.repository.BoardFileRepository;
 import com.its.memberboard.repository.BoardRepository;
 import com.its.memberboard.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,5 +85,19 @@ public class BoardService {
         } else {
             return null;
         }
+    }
+    public Page<BoardDTO> paging(Pageable pageable) {
+        int page = pageable.getPageNumber() - 1;
+        final int pageLimit = 5;
+        Page<BoardEntity> boardEntities = boardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+        Page<BoardDTO> boardList = boardEntities.map(
+                board -> new BoardDTO(board.getId(),
+                        board.getBoardWriter(),
+                        board.getBoardTitle(),
+                        board.getCreatedTime(),
+                        board.getBoardHits()
+                )
+        );
+        return boardList;
     }
 }
