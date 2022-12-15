@@ -52,50 +52,55 @@
         </tr>
 
     </table>
-    <div class="container">
-        <button class="btn btn-primary" onclick="listReq()">목록</button>
-        <button class="btn btn-warning" onclick="req('update')">수정</button>
-        <button class="btn btn-danger" onclick="req('delete')">삭제</button>
-    </div>
-    <div id="pass-check">
-
-    </div>
 </div>
-<div class="container mt-5" id="comment-write">
-    <div class="input-group-sm mb-3">
-        <div class="form-floating">
-            <input type="text" id="commentWriter" class="form-control" placeholder="작성자" th:value="${session.member.memberEmail}" readonly>
-            <label for="commentWriter">작성자</label>
+
+    <div class="container mt-5" id="comment-list">
+        <div th:if="${commentList == 'empty'}">
+            <p>작성된 댓글이 없습니다.</p>
         </div>
-        <div class="form-floating">
-            <input type="text" id="commentContents" class="form-control" placeholder="내용">
+        <div th:unless="${commentList == 'empty'}">
+            <table class="table">
+                <tr>
+                    <th>댓글번호</th>
+                    <th>작성자</th>
+                    <th>내용</th>
+                    <th>작성시간</th>
+                </tr>
+                <tr th:each="comment: ${commentList}">
+                    <td th:text="${comment.id}"></td>
+                    <td th:text="${comment.commentWriter}"></td>
+                    <td th:text="${comment.commentContents}"></td>
+                    <td th:text="*{#temporals.format(comment.commentCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+<!--댓글 입력창-->
+<div class="container" id="comment-write">
+        <input type="hidden" th:value="${board.id}" name="boardId">
+        <div class="form-group">
+            <label for="commentWriter">작성자</label>
+            <input type="text" class="form-control" id="commentWriter" th:value="${session.member.memberEmail}" readonly>
+        </div>
+        <div class="form-group">
             <label for="commentContents">내용</label>
+            <textarea class="form-control" id="commentContents" rows="3" name="commentContents"></textarea>
         </div>
         <button id="comment-write-btn" class="btn btn-secondary" onclick="commentWrite()">댓글작성</button>
-    </div>
 </div>
-<div class="container mt-5" id="comment-list">
-    <div th:if="${commentList == 'empty'}">
-        <p>작성된 댓글이 없습니다.</p>
-    </div>
-    <div th:unless="${commentList == 'empty'}">
-        <table class="table">
-            <tr>
-                <th>댓글번호</th>
-                <th>작성자</th>
-                <th>내용</th>
-                <th>작성시간</th>
-            </tr>
-            <tr th:each="comment: ${commentList}">
-                <td th:text="${comment.id}"></td>
-                <td th:text="${comment.commentWriter}"></td>
-                <td th:text="${comment.commentContents}"></td>
-                <td th:text="*{#temporals.format(comment.commentCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-            </tr>
-        </table>
-    </div>
-</div>
+
+
+
+
+
+
+
+
+
+
 </body>
+
 <script th:inline="javascript">
     const commentWrite = () => {
         const writer = document.getElementById("commentWriter").value;
@@ -135,38 +140,6 @@
             console.log(err);
         })
     }
-
-    const listReq = () => {
-        location.href = "/board/";
-    }
-    const req = (value) => {
-        console.log("value값", value);
-        const passCheckArea = document.getElementById("pass-check");
-        passCheckArea.innerHTML = "<input type=\"text\" id=\"password\" placeholder=\"password\">\n" +
-            "        <button class=\"btn btn-outline-dark\" onclick=\"passCheck('" + value + "')\">확인</button>";
-    }
-    const passCheck = (value) => {
-        console.log(value);
-        const password = document.getElementById("password").value;
-        const passDB = [[${board.boardPass}]];
-        const id = [[${board.id}]];
-        if (password == passDB) {
-            if (value == "update") {
-                location.href = "/board/update/" + id;
-            } else if (value == "delete") {
-                // location.href = "/board/delete/" + id;
-                axios({
-                    method: "delete",
-                    url: "/board/" + id
-                }).then(res => {
-                    location.href = "/board/";
-                }).catch(err => {
-                    alert("삭제실패");
-                })
-            }
-        } else {
-            alert("비밀번호 불일치!!");
-        }
-    }
 </script>
+
 </html>

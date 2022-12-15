@@ -31,7 +31,7 @@ public class CommentService {
         BoardEntity boardEntity = boardRepository.findById(boardId).get();
         // 1. comment_table에서 직접 해당 게시글의 댓글 목록을 가져오기
         List<CommentEntity> commentEntityList =
-                commentRepository.findAllByBoardEntityOrderByIdDesc(boardEntity);
+                commentRepository.findAllByBoardEntity(boardEntity);
         // 2. BoardEntity를 조회해서 댓글 목록 가져오기
 //        List<CommentEntity> commentEntityList = boardEntity.getCommentEntityList();
         List<CommentDTO> commentDTOList = new ArrayList<>();
