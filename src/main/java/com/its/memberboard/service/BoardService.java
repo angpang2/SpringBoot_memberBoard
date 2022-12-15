@@ -8,11 +8,15 @@ import com.its.memberboard.repository.BoardFileRepository;
 import com.its.memberboard.repository.BoardRepository;
 import com.its.memberboard.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -49,5 +53,16 @@ public class BoardService {
             }
             return savedId;
         }
+    }
+
+    @Transactional
+    public List<BoardDTO> findAll() {
+        List<BoardEntity> boardEntityList = boardRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        List<BoardDTO> boardDTOList = new ArrayList<>();
+        for (BoardEntity boardEntity : boardEntityList) {
+            BoardDTO boardDTO = BoardDTO.toDTO(boardEntity);
+            boardDTOList.add(boardDTO);
+        }
+        return boardDTOList;
     }
 }
