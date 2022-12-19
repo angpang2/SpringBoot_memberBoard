@@ -105,7 +105,6 @@ public class BoardService {
     public Page<BoardDTO> searchPaging(Pageable pageable,String type ,String q) {
         int page = pageable.getPageNumber() - 1;
         final int pageLimit = 5;
-        System.out.println("q = " + q + ", pageable = " + pageable + ", type = " + type);
         if (type.equals("boardTitle")) {
             Page<BoardEntity> boardEntities = boardRepository.findByBoardTitleContaining(q, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
             Page<BoardDTO> boardList = boardEntities.map(

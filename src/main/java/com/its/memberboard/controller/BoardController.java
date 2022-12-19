@@ -57,16 +57,13 @@ public class BoardController {
             int blockLimit = 3;
             int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
             int endPage = ((startPage + blockLimit - 1) < boardDTOList.getTotalPages()) ? startPage + blockLimit - 1 : boardDTOList.getTotalPages();
-            // 삼항연산자
-            int test = 10;
-            int num = (test > 5) ? test: 100;
-            if (test > 5) {
-                num = test;
-            } else {
-                num = 100;
-            }
+
             model.addAttribute("startPage", startPage);
             model.addAttribute("endPage", endPage);
+            PageDTO pageDTO = new PageDTO();
+            pageDTO.setType(type);
+            pageDTO.setQ(q);
+            model.addAttribute("pageDTO",pageDTO);
             return "boardPages/boardList";
         }else {
             Page<BoardDTO> boardDTOList = boardService.searchPaging(pageable, q, type);
@@ -74,20 +71,13 @@ public class BoardController {
             int blockLimit = 3;
             int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
             int endPage = ((startPage + blockLimit - 1) < boardDTOList.getTotalPages()) ? startPage + blockLimit - 1 : boardDTOList.getTotalPages();
-            // 삼항연산자
-            int test = 10;
-            int num = (test > 5) ? test: 100;
-            if (test > 5) {
-                num = test;
-            } else {
-                num = 100;
-            }
+
             model.addAttribute("startPage", startPage);
             model.addAttribute("endPage", endPage);
             PageDTO pageDTO = new PageDTO();
             pageDTO.setType(type);
             pageDTO.setQ(q);
-            model.addAttribute("pageDTO", pageDTO);
+            model.addAttribute("pageDTO",pageDTO);
             return "boardPages/boardList";
         }
 
@@ -116,14 +106,7 @@ public class BoardController {
         int blockLimit = 3;
         int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
         int endPage = ((startPage + blockLimit - 1) < searchList.getTotalPages()) ? startPage + blockLimit - 1 : searchList.getTotalPages();
-        // 삼항연산자
-        int test = 10;
-        int num = (test > 5) ? test: 100;
-        if (test > 5) {
-            num = test;
-        } else {
-            num = 100;
-        }
+
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
         PageDTO pageDTO = new PageDTO();
