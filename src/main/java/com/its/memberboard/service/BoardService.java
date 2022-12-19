@@ -102,20 +102,42 @@ public class BoardService {
     }
 
 //   검색 and 페이징처리
-    public Page<BoardDTO> searchPaging(String q, Pageable pageable) {
+    public Page<BoardDTO> searchPaging(String q, Pageable pageable,String type) {
         int page = pageable.getPageNumber() - 1;
         final int pageLimit = 5;
-        Page<BoardEntity> boardEntities = boardRepository.findByBoardTitleContaining(q, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
-        Page<BoardDTO> boardList = boardEntities.map(
-                board -> new BoardDTO(board.getId(),
-                        board.getBoardWriter(),
-                        board.getBoardTitle(),
-                        board.getCreatedTime(),
-                        board.getBoardHits()
-                )
-        );
-        return boardList;
-    }
-
+        System.out.println("q = " + q + ", pageable = " + pageable + ", type = " + type);
+        if (type.equals("boardTitle")) {
+            Page<BoardEntity> boardEntities = boardRepository.findByBoardTitleContaining(q, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+            Page<BoardDTO> boardList = boardEntities.map(
+                    board -> new BoardDTO(board.getId(),
+                            board.getBoardWriter(),
+                            board.getBoardTitle(),
+                            board.getCreatedTime(),
+                            board.getBoardHits()
+                    ));
+            return boardList;
+    }else if (type.equals("boardWriter")){
+            Page<BoardEntity> boardEntities = boardRepository.findByBoardWriterContaining(q, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+            Page<BoardDTO> boardList = boardEntities.map(
+                    board -> new BoardDTO(board.getId(),
+                            board.getBoardWriter(),
+                            board.getBoardTitle(),
+                            board.getCreatedTime(),
+                            board.getBoardHits()
+                    ));
+            return boardList;
+        }else {
+            Page<BoardEntity> boardEntities = boardRepository.findByBoardContentsContaining(q, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+            Page<BoardDTO> boardList = boardEntities.map(
+                    board -> new BoardDTO(board.getId(),
+                            board.getBoardWriter(),
+                            board.getBoardTitle(),
+                            board.getCreatedTime(),
+                            board.getBoardHits()
+                    ));
+            return boardList;
+        }
 }
+}
+
 

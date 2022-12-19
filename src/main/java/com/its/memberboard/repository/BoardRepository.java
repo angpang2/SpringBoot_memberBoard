@@ -20,4 +20,8 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     List<BoardEntity> findByBoardTitleContainingOrderByIdDesc(String q);
 
     Page<BoardEntity> findByBoardTitleContaining(String q, PageRequest id);
+
+    Page<BoardEntity> findByBoardWriterContaining(String q, PageRequest id);
+
+    Page<BoardEntity> findByBoardContentsContaining(String q, PageRequest id);
 }

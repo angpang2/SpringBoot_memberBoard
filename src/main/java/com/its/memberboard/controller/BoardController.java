@@ -85,7 +85,7 @@ public class BoardController {
     @GetMapping("/search")
     public String search(@PageableDefault(page = 1) Pageable pageable,@RequestParam("type")String type,@RequestParam("q")String q,Model model){
         System.out.println("type = " + type + ", q = " + q + ", model = " + model);
-        Page<BoardDTO>searchList = boardService.searchPaging(q,pageable);
+        Page<BoardDTO>searchList = boardService.searchPaging(q,pageable,type);
         model.addAttribute("boardList",searchList);
         int blockLimit = 3;
         int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
