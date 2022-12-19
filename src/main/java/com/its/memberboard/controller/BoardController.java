@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/board")
@@ -114,6 +116,16 @@ public class BoardController {
         model.addAttribute("pageDTO", pageDTO);
         return "boardPages/boardList";
     }
+
+    @GetMapping("/Like")
+    public @ResponseBody BoardDTO boardLike(@RequestParam("boardId")Long boardId ,@RequestParam("memberId")Long memberId){
+        boardService.updateLike(boardId);
+        BoardDTO boardDTO = boardService.findById(boardId);
+        return boardDTO;
+    }
+
+
+
 
 
 }

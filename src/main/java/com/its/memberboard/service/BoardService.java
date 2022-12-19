@@ -75,6 +75,11 @@ public class BoardService {
         boardRepository.updateHits(id);
     }
 
+    @Transactional
+    public void updateLike(Long boardId) {
+        boardRepository.updateLike(boardId);
+    }
+
     @Transactional // 부모엔티티에서 자식엔티티를 직접 가져올 때 필요.
     public BoardDTO findById(Long id) {
         Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);

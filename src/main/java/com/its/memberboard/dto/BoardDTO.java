@@ -22,6 +22,7 @@ public class BoardDTO {
     private LocalDateTime boardCreatedTime;
     private LocalDateTime boardUpdatedTime;
     private int boardHits;
+    private int boardLike;
 
     private List<MultipartFile> boardFile;
     private int fileAttached;
@@ -47,6 +48,7 @@ public class BoardDTO {
         boardDTO.setBoardCreatedTime(boardEntity.getCreatedTime());
         boardDTO.setBoardUpdatedTime(boardEntity.getUpdatedTime());
         boardDTO.setBoardHits(boardEntity.getBoardHits());
+        boardDTO.setBoardLike(boardEntity.getBoardLike());
 
         // 파일 관련된 내용 추가
         if (boardEntity.getFileAttached() == 1) {

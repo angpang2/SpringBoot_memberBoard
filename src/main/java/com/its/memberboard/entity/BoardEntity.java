@@ -30,6 +30,9 @@ public class BoardEntity extends BaseEntity {
     private int boardHits;
 
     @Column
+    private int boardLike;
+
+    @Column
     private int fileAttached; // 파일있음 1. 파일없음 0.
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -50,6 +53,7 @@ public class BoardEntity extends BaseEntity {
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
         boardEntity.setBoardContents(boardDTO.getBoardContents());
         boardEntity.setBoardHits(0);
+        boardEntity.setBoardLike(0);
         boardEntity.setFileAttached(0);
         boardEntity.setMemberEntity(memberEntity);
         return boardEntity;
@@ -61,6 +65,7 @@ public class BoardEntity extends BaseEntity {
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
         boardEntity.setBoardContents(boardDTO.getBoardContents());
         boardEntity.setBoardHits(0);
+        boardEntity.setBoardLike(0);
         boardEntity.setFileAttached(1);
         boardEntity.setMemberEntity(memberEntity);
         return boardEntity;
@@ -74,6 +79,7 @@ public class BoardEntity extends BaseEntity {
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
         boardEntity.setBoardContents(boardDTO.getBoardContents());
         boardEntity.setBoardHits(boardDTO.getBoardHits());
+        boardEntity.setBoardLike(boardDTO.getBoardLike());
         return boardEntity;
     }
 }
