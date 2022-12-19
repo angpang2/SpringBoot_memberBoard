@@ -63,10 +63,8 @@ public class BoardController {
         } else {
             num = 100;
         }
-
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
-
         return "boardPages/boardList";
     }
 
@@ -85,11 +83,24 @@ public class BoardController {
     }
 
     @GetMapping("/search")
-    public String search(@RequestParam("type")String type,@RequestParam("q")String q,Model model){
+    public String search(@PageableDefault(page = 1) Pageable pageable,@RequestParam("type")String type,@RequestParam("q")String q,Model model){
         System.out.println("type = " + type + ", q = " + q + ", model = " + model);
-        List<BoardDTO>searchList = boardService.search(type,q);
+        Page<BoardDTO>searchList = boardService.searchPaging(q,pageable);
         model.addAttribute("boardList",searchList);
-        return "";
+        int blockLimit = 3;
+        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+        int endPage = ((startPage + blockLimit - 1) < searchList.getTotalPages()) ? startPage + blockLimit - 1 : searchList.getTotalPages();
+        // 삼항연산자
+        int test = 10;
+        int num = (test > 5) ? test: 100;
+        if (test > 5) {
+            num = test;
+        } else {
+            num = 100;
+        }
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        return "boardPages/boardList";
     }
 
 

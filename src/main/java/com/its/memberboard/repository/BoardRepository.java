@@ -1,6 +1,8 @@
 package com.its.memberboard.repository;
 
 import com.its.memberboard.entity.BoardEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +19,5 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     List<BoardEntity> findByBoardWriterContainingOrderByIdDesc(String q);
     List<BoardEntity> findByBoardTitleContainingOrderByIdDesc(String q);
 
+    Page<BoardEntity> findByBoardTitleContaining(String q, PageRequest id);
 }

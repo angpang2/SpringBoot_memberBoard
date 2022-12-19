@@ -101,24 +101,21 @@ public class BoardService {
         return boardList;
     }
 
-    public List<BoardDTO> search(String type, String q) {
-        // 작성자 검색
-        // select * from board_table where board_writer like '%q%';
-        List<BoardDTO> boardDTOList = new ArrayList<>();
-        List<BoardEntity> boardEntityList = null;
-        if (type.equals("boardWriter")) {
-            boardEntityList = boardRepository.findByBoardWriterContainingOrderByIdDesc(q);
-        } else if (type.equals("boardTitle")) {
-            boardEntityList = boardRepository.findByBoardTitleContainingOrderByIdDesc(q);
-        } else {
-            boardEntityList =
-                    boardRepository.findByBoardTitleContainingOrBoardWriterContainingOrderByIdDesc(q, q);
-        }
-
-        for (BoardEntity boardEntity : boardEntityList) {
-            boardDTOList.add(BoardDTO.toDTO(boardEntity));
-        }
-        return boardDTOList;
+//   검색 and 페이징처리
+    public Page<BoardDTO> searchPaging(String q, Pageable pageable) {
+        int page = pageable.getPageNumber() - 1;
+        final int pageLimit = 5;
+        Page<BoardEntity> boardEntities = boardRepository.findByBoardTitleContaining(q, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+        Page<BoardDTO> boardList = boardEntities.map(
+                board -> new BoardDTO(board.getId(),
+                        board.getBoardWriter(),
+                        board.getBoardTitle(),
+                        board.getCreatedTime(),
+                        board.getBoardHits()
+                )
+        );
+        return boardList;
     }
+
 }
 
