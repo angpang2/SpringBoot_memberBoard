@@ -2,6 +2,7 @@ package com.its.memberboard.controller;
 
 import com.its.memberboard.dto.BoardDTO;
 import com.its.memberboard.dto.CommentDTO;
+import com.its.memberboard.dto.PageDTO;
 import com.its.memberboard.entity.BoardEntity;
 import com.its.memberboard.repository.BoardRepository;
 import com.its.memberboard.service.BoardService;
@@ -48,24 +49,49 @@ public class BoardController {
     }
 
     @GetMapping
-    public String paging(@PageableDefault(page = 1) Pageable pageable, Model model) {
+    public String paging(@PageableDefault(page = 1) Pageable pageable, Model model , @RequestParam(value = "q", required = false) String q, @RequestParam(value = "type", required = false) String type) {
         System.out.println("page" + pageable.getPageNumber());
-        Page<BoardDTO> boardDTOList = boardService.paging(pageable);
-        model.addAttribute("boardList", boardDTOList);
-        int blockLimit = 3;
-        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
-        int endPage = ((startPage + blockLimit - 1) < boardDTOList.getTotalPages()) ? startPage + blockLimit - 1 : boardDTOList.getTotalPages();
-        // 삼항연산자
-        int test = 10;
-        int num = (test > 5) ? test: 100;
-        if (test > 5) {
-            num = test;
-        } else {
-            num = 100;
+        if (q == null) {
+            Page<BoardDTO> boardDTOList = boardService.paging(pageable);
+            model.addAttribute("boardList", boardDTOList);
+            int blockLimit = 3;
+            int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+            int endPage = ((startPage + blockLimit - 1) < boardDTOList.getTotalPages()) ? startPage + blockLimit - 1 : boardDTOList.getTotalPages();
+            // 삼항연산자
+            int test = 10;
+            int num = (test > 5) ? test: 100;
+            if (test > 5) {
+                num = test;
+            } else {
+                num = 100;
+            }
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+            return "boardPages/boardList";
+        }else {
+            Page<BoardDTO> boardDTOList = boardService.searchPaging(pageable, q, type);
+            model.addAttribute("boardList", boardDTOList);
+            int blockLimit = 3;
+            int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+            int endPage = ((startPage + blockLimit - 1) < boardDTOList.getTotalPages()) ? startPage + blockLimit - 1 : boardDTOList.getTotalPages();
+            // 삼항연산자
+            int test = 10;
+            int num = (test > 5) ? test: 100;
+            if (test > 5) {
+                num = test;
+            } else {
+                num = 100;
+            }
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+            PageDTO pageDTO = new PageDTO();
+            pageDTO.setType(type);
+            pageDTO.setQ(q);
+            model.addAttribute("pageDTO", pageDTO);
+            return "boardPages/boardList";
         }
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
-        return "boardPages/boardList";
+
+
     }
 
     @GetMapping("/{id}")
@@ -85,7 +111,7 @@ public class BoardController {
     @GetMapping("/search")
     public String search(@PageableDefault(page = 1) Pageable pageable,@RequestParam("type")String type,@RequestParam("q")String q,Model model){
         System.out.println("type = " + type + ", q = " + q + ", model = " + model);
-        Page<BoardDTO>searchList = boardService.searchPaging(q,pageable,type);
+        Page<BoardDTO>searchList = boardService.searchPaging(pageable,type,q);
         model.addAttribute("boardList",searchList);
         int blockLimit = 3;
         int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
@@ -100,6 +126,10 @@ public class BoardController {
         }
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+        PageDTO pageDTO = new PageDTO();
+        pageDTO.setType(type);
+        pageDTO.setQ(q);
+        model.addAttribute("pageDTO", pageDTO);
         return "boardPages/boardList";
     }
 

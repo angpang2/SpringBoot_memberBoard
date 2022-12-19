@@ -102,7 +102,7 @@ public class BoardService {
     }
 
 //   검색 and 페이징처리
-    public Page<BoardDTO> searchPaging(String q, Pageable pageable,String type) {
+    public Page<BoardDTO> searchPaging(Pageable pageable,String type ,String q) {
         int page = pageable.getPageNumber() - 1;
         final int pageLimit = 5;
         System.out.println("q = " + q + ", pageable = " + pageable + ", type = " + type);
@@ -126,7 +126,7 @@ public class BoardService {
                             board.getBoardHits()
                     ));
             return boardList;
-        }else {
+        }else if (type.equals("boardContents")){
             Page<BoardEntity> boardEntities = boardRepository.findByBoardContentsContaining(q, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
             Page<BoardDTO> boardList = boardEntities.map(
                     board -> new BoardDTO(board.getId(),
@@ -135,6 +135,17 @@ public class BoardService {
                             board.getCreatedTime(),
                             board.getBoardHits()
                     ));
+            return boardList;
+        }else {
+            Page<BoardEntity> boardEntities = boardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+            Page<BoardDTO> boardList = boardEntities.map(
+                    board -> new BoardDTO(board.getId(),
+                            board.getBoardWriter(),
+                            board.getBoardTitle(),
+                            board.getCreatedTime(),
+                            board.getBoardHits()
+                    )
+            );
             return boardList;
         }
 }
