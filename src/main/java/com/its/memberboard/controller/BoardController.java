@@ -106,7 +106,6 @@ public class BoardController {
         int blockLimit = 3;
         int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
         int endPage = ((startPage + blockLimit - 1) < searchList.getTotalPages()) ? startPage + blockLimit - 1 : searchList.getTotalPages();
-
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
         PageDTO pageDTO = new PageDTO();
